@@ -1,4 +1,4 @@
-#React 18 App with Redux Toolkit and RxJS Observables Documentation
+# React 18 App with Redux Toolkit and RxJS Observables Documentation
 
 This documentation provides a step-by-step guide to integrating Redux Toolkit and RxJS Observables into a React 18 application for API data fetching. 
 The combination of Redux Toolkit and RxJS Observables offers a powerful solution for managing application state and handling asynchronous operations.
