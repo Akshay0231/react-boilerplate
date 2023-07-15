@@ -55,13 +55,29 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const userListSlice = createSlice({
   name: 'userList',
-  initialState: [],
+  initialState: {
+    data: [],
+    loading: false,
+    error: null,
+  },
   reducers: {
-    setUserList: (state, action) => action.payload,
+    setUserList: (state, action) => {
+      state.data = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    setLoading: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    setError: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
-export const { setUserList } = userListSlice.actions;
+export const { setUserList, setLoading, setError } = userListSlice.actions;
 export default userListSlice.reducer;
 ```
 
@@ -98,19 +114,32 @@ import { fetchUserList } from './logic';
 const UserList = () => {
   const dispatch = useDispatch();
   const userList = useSelector(state => state.userList);
+  const { data, loading, error } = userList;
 
   useEffect(() => {
     dispatch(fetchUserList());
   }, [dispatch]);
 
+  const handleFetchClick = () => {
+    dispatch(fetchUserList());
+  };
+
   return (
     <div>
       <h1>User List:</h1>
-      <ul>
-        {userList.map(user => (
-          <li key={user.id}>{user.login}</li>
-        ))}
-      </ul>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {data.map(user => (
+            <li key={user.id}>{user.login}</li>
+          ))}
+        </ul>
+      )}
+      {error && <p>Error: {error.message}</p>}
+      <button onClick={handleFetchClick} disabled={loading}>
+        {loading ? 'Fetching...' : 'Fetch User List'}
+      </button>
     </div>
   );
 };
@@ -127,10 +156,12 @@ export default UserList;
 ```javascript
 // components/logic.js
 import { from } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { setUserList } from '../reducers/userListSlice';
+import { tap, catchError } from 'rxjs/operators';
+import { setUserList, setLoading, setError } from '../reducers/userListSlice';
 
 export const fetchUserList = () => dispatch => {
+  dispatch(setLoading());
+
   const apiObservable = from(fetch('https://api.github.com/users'));
 
   apiObservable
@@ -144,6 +175,10 @@ export const fetchUserList = () => dispatch => {
       }),
       tap(data => {
         dispatch(setUserList(data));
+      }),
+      catchError(error => {
+        dispatch(setError(error));
+        return [];
       })
     )
     .subscribe();
@@ -172,5 +207,6 @@ render(
   document.getElementById('root')
 );
 ```
+
 
 ## Make sure to adjust the instructions, component names, and file paths to match your project's structure. This documentation provides a comprehensive guide for integrating Redux Toolkit and RxJS Observables in a React 18 app, making it easier for you and your team to understand and follow the implementation process.
