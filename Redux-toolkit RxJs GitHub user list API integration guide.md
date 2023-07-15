@@ -12,7 +12,6 @@ This documentation provides a step-by-step guide to integrating Redux Toolkit an
 6. [UserList Component Setup](#userlist-component-setup)
 7. [API Data Fetching with RxJS](#api-data-fetching-with-rxjs)
 8. [Connect Redux Store](#connect-redux-store)
-9. [Summary](#summary)
 
 ## Prerequisites
 
@@ -209,4 +208,4 @@ render(
 ```
 
 
-## Make sure to adjust the instructions, component names, and file paths to match your project's structure. This documentation provides a comprehensive guide for integrating Redux Toolkit and RxJS Observables in a React 18 app, making it easier for you and your team to understand and follow the implementation process.
+## Make sure to adjust the instructions, component names, and file paths to match your project's structure. This documentation provides a comprehensive guide for integrating Redux Toolkit and RxJS Observables in a React 18 app, making it easier to understand and follow the implementation process.
