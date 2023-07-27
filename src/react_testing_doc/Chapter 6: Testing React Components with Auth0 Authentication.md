@@ -6,7 +6,7 @@ In this chapter, we will explore how to test React components that use Auth0 aut
 
 ## 6.2 Handling Authentication and Authorization in Unit Tests
 
-When testing React components that involve authentication and authorization, it's essential to simulate the user's authentication status and roles. We'll use Auth0's authentication library to mock authentication in our tests.
+When testing React components that involve authentication and authorization, it's essential to simulate various scenarios, such as loading states, user roles, and permissions. We'll use Auth0's authentication library to mock authentication in our tests.
 
 Let's consider a simple example of a React component that shows different content based on the user's authentication status:
 
@@ -177,9 +177,7 @@ const RoleBasedContent = () => {
     return <div>Please log in to view content.</div>;
   }
 
- 
-
- // Check if the user has the 'admin' role
+  // Check if the user has the 'admin' role
   const isAdmin = user?.['https://example.com/roles']?.includes('admin');
 
   return (
@@ -196,7 +194,7 @@ const RoleBasedContent = () => {
 export default RoleBasedContent;
 ```
 
-Now, let's write unit tests for this component based on different user roles.
+Now, let's write unit tests for this component based on different user roles and permissions.
 
 ```javascript
 // __tests__/components/RoleBasedContent.test.js
@@ -217,7 +215,9 @@ describe('RoleBasedContent Component', () => {
 
     render(<RoleBasedContent />);
 
-    const loginMessage = screen.getByText('Please log in to view content.');
+    const loginMessage = screen.getByText('Please
+
+ log in to view content.');
     expect(loginMessage).toBeInTheDocument();
   });
 
